@@ -1,0 +1,15 @@
+{
+  "type": "module",
+  "scripts": {
+    "start": "node --watch --env-file=.env src/server.mjs"
+  },
+  "dependencies": {
+    "zod": "3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "20.10.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
