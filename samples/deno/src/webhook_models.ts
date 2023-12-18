@@ -13,6 +13,7 @@ export enum FileType {
 export enum EventType {
   ProofCreated = 'proof_created',
   ProofStatusReached = 'proof_status_reached',
+  ProofDeleted = 'proof_deleted',
   WorkflowStepReached = 'workflow_step_reached',
 }
 
@@ -33,6 +34,10 @@ export enum TriggerType {
 
 export type ProofCreatedWebhookEvent = {
   type: EventType.ProofCreated;
+}
+
+export type ProofDeletedWebhookEvent = {
+  type: EventType.ProofDeleted;
 }
 
 export type ProofStatusReachedWebhookEvent = {
@@ -63,6 +68,11 @@ export type WorkflowStepReachedTriggerEvent = {
 
 export type ProofCreatedTriggerEvent = {
   type: EventType.ProofCreated;
+  date: string;
+}
+
+export type ProofDeletedTriggerEvent = {
+  type: EventType.ProofDeleted;
   date: string;
 }
 
@@ -113,18 +123,21 @@ export type Proof = {
 
 type WebhookEventMap = {
   [EventType.ProofCreated]: ProofCreatedWebhookEvent;
+  [EventType.ProofDeleted]: ProofDeletedWebhookEvent;
   [EventType.ProofStatusReached]: ProofStatusReachedWebhookEvent;
   [EventType.WorkflowStepReached]: WorkflowStepReachedWebhookEvent;
 }
 
 type ProofMap = {
   [EventType.ProofCreated]: Proof;
+  [EventType.ProofDeleted]: Proof;
   [EventType.ProofStatusReached]: Proof;
   [EventType.WorkflowStepReached]: Proof;
 }
 
 type TriggerEventMap = {
   [EventType.ProofCreated]: ProofCreatedTriggerEvent;
+  [EventType.ProofDeleted]: ProofDeletedTriggerEvent;
   [EventType.ProofStatusReached]: ProofStatusReachedTriggerEvent;
   [EventType.WorkflowStepReached]: WorkflowStepReachedTriggerEvent;
 };
