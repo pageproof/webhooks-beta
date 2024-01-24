@@ -130,7 +130,7 @@ type WebhookEventMap = {
 
 type ProofMap = {
   [EventType.ProofCreated]: Proof;
-  [EventType.ProofDeleted]: Proof['id'];
+  [EventType.ProofDeleted]: Pick<Proof, 'id'>;
   [EventType.ProofStatusReached]: Proof;
   [EventType.WorkflowStepReached]: Proof;
 }
