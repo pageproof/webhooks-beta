@@ -1,10 +1,10 @@
 # Webhooks (beta) Changelog
 
-## 2023-01-25
+## 12th February 2024
 
 - Added proof deleted webhook.
 
-## 2023-12-7
+## 7th December 2023
 
 - Initial beta release.
 
