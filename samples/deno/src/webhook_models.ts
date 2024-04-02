@@ -15,6 +15,7 @@ export enum EventType {
   ProofStatusReached = 'proof_status_reached',
   ProofDeleted = 'proof_deleted',
   WorkflowStepReached = 'workflow_step_reached',
+  ProofOverdue = 'proof_overdue',
 }
 
 export enum ProofStatus {
@@ -54,6 +55,10 @@ export type WorkflowStepReachedWebhookEvent = {
   };
 }
 
+export type ProofOverdueWebhookEvent = {
+  type: EventType.ProofOverdue;
+}
+
 export type ProofStatusReachedTriggerEvent = {
   type: EventType.ProofStatusReached;
   date: string;
@@ -73,6 +78,11 @@ export type ProofCreatedTriggerEvent = {
 
 export type ProofDeletedTriggerEvent = {
   type: EventType.ProofDeleted;
+  date: string;
+}
+
+export type ProofOverdueTriggerEvent = {
+  type: EventType.ProofOverdue;
   date: string;
 }
 
@@ -126,6 +136,7 @@ type WebhookEventMap = {
   [EventType.ProofDeleted]: ProofDeletedWebhookEvent;
   [EventType.ProofStatusReached]: ProofStatusReachedWebhookEvent;
   [EventType.WorkflowStepReached]: WorkflowStepReachedWebhookEvent;
+  [EventType.ProofOverdue]: ProofOverdueWebhookEvent;
 }
 
 type ProofMap = {
@@ -133,6 +144,7 @@ type ProofMap = {
   [EventType.ProofDeleted]: Pick<Proof, 'id'>;
   [EventType.ProofStatusReached]: Proof;
   [EventType.WorkflowStepReached]: Proof;
+  [EventType.ProofOverdue]: Proof;
 }
 
 type TriggerEventMap = {
@@ -140,6 +152,7 @@ type TriggerEventMap = {
   [EventType.ProofDeleted]: ProofDeletedTriggerEvent;
   [EventType.ProofStatusReached]: ProofStatusReachedTriggerEvent;
   [EventType.WorkflowStepReached]: WorkflowStepReachedTriggerEvent;
+  [EventType.ProofOverdue]: ProofOverdueTriggerEvent;
 };
 
 export type Payload<T extends EventType> = {
