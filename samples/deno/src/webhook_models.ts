@@ -127,14 +127,17 @@ export type IntegrationReference = {
 
 export type Proof = {
   id: string;
+  teamId: string;
   status: string;
   name: string;
   versionNumber: number;
+  previousVersionProofId: string | null;
   reference: string | null;
   tags: string[];
   integrationReferences: IntegrationReference[];
   createdDate: string;
   approvedDate: string;
+  dueDate: string;
   commentCounts: {
     unmarked: number;
     todo: number;
