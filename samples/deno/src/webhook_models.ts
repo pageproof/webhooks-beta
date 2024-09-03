@@ -16,6 +16,8 @@ export enum EventType {
   ProofDeleted = 'proof_deleted',
   WorkflowStepReached = 'workflow_step_reached',
   ProofOverdue = 'proof_overdue',
+  ProofArchived = 'proof_archived',
+  ProofUnarchived = 'proof_unarchived',
 }
 
 export enum ProofStatus {
@@ -59,6 +61,14 @@ export type ProofOverdueWebhookEvent = {
   type: EventType.ProofOverdue;
 }
 
+export type ProofArchivedWebhookEvent = {
+  type: EventType.ProofArchived;
+}
+
+export type ProofUnarchivedWebhookEvent = {
+  type: EventType.ProofUnarchived;
+}
+
 export type ProofStatusReachedTriggerEvent = {
   type: EventType.ProofStatusReached;
   date: string;
@@ -86,6 +96,16 @@ export type ProofOverdueTriggerEvent = {
   date: string;
 }
 
+export type ProofArchivedTriggerEvent = {
+  type: EventType.ProofArchived;
+  date: string;
+}
+
+export type ProofUnarchivedTriggerEvent = {
+  type: EventType.ProofUnarchived;
+  date: string;
+}
+
 export type IntegrationReference = {
   referenceId: string;
   referenceType:
@@ -107,14 +127,17 @@ export type IntegrationReference = {
 
 export type Proof = {
   id: string;
+  teamId: string;
   status: string;
   name: string;
   versionNumber: number;
+  previousVersionProofId: string | null;
   reference: string | null;
   tags: string[];
   integrationReferences: IntegrationReference[];
   createdDate: string;
   approvedDate: string;
+  dueDate: string;
   commentCounts: {
     unmarked: number;
     todo: number;
@@ -137,6 +160,8 @@ type WebhookEventMap = {
   [EventType.ProofStatusReached]: ProofStatusReachedWebhookEvent;
   [EventType.WorkflowStepReached]: WorkflowStepReachedWebhookEvent;
   [EventType.ProofOverdue]: ProofOverdueWebhookEvent;
+  [EventType.ProofArchived]: ProofArchivedWebhookEvent;
+  [EventType.ProofUnarchived]: ProofUnarchivedWebhookEvent;
 }
 
 type ProofMap = {
@@ -145,6 +170,8 @@ type ProofMap = {
   [EventType.ProofStatusReached]: Proof;
   [EventType.WorkflowStepReached]: Proof;
   [EventType.ProofOverdue]: Proof;
+  [EventType.ProofArchived]: Proof;
+  [EventType.ProofUnarchived]: Proof;
 }
 
 type TriggerEventMap = {
@@ -153,6 +180,8 @@ type TriggerEventMap = {
   [EventType.ProofStatusReached]: ProofStatusReachedTriggerEvent;
   [EventType.WorkflowStepReached]: WorkflowStepReachedTriggerEvent;
   [EventType.ProofOverdue]: ProofOverdueTriggerEvent;
+  [EventType.ProofArchived]: ProofArchivedTriggerEvent;
+  [EventType.ProofUnarchived]: ProofUnarchivedTriggerEvent;
 };
 
 export type Payload<T extends EventType> = {
