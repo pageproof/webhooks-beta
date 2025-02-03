@@ -18,6 +18,8 @@ export enum EventType {
   ProofOverdue = 'proof_overdue',
   ProofArchived = 'proof_archived',
   ProofUnarchived = 'proof_unarchived',
+  UserMentioned = 'user_mentioned',
+  ReviewerDecision = 'reviewer_decision',
 }
 
 export enum ProofStatus {
@@ -34,6 +36,24 @@ export enum TriggerType {
   System = 'system',
   User = 'user',
 }
+
+export enum ReviewerDecision {
+  NoDecision = 'No decision',
+  Approved = 'Approved',
+  ChangesPlease = 'Changes please',
+  ApprovedWithChanges = 'Approved with changes',
+  TodosRequested = 'To-dos requested',
+}
+
+export enum ReviewerRole {
+  Reviewer = 'reviewer',
+  Mandatory = 'mandatory',
+  Gatekeeper = 'gatekeeper',
+  Approver = 'approver',
+  UnlistedReviewer = 'unlisted-reviewer',
+  Owner = 'owner',
+}
+
 
 export type ProofCreatedWebhookEvent = {
   type: EventType.ProofCreated;
@@ -68,6 +88,16 @@ export type ProofArchivedWebhookEvent = {
 export type ProofUnarchivedWebhookEvent = {
   type: EventType.ProofUnarchived;
 }
+
+export type UserMentionedWebhookEvent = {
+  type: EventType.UserMentioned;
+}
+
+export type ReviewerDecisionWebhookEvent = {
+  type: EventType.ReviewerDecision;
+}
+
+
 
 export type ProofStatusReachedTriggerEvent = {
   type: EventType.ProofStatusReached;
@@ -104,6 +134,21 @@ export type ProofArchivedTriggerEvent = {
 export type ProofUnarchivedTriggerEvent = {
   type: EventType.ProofUnarchived;
   date: string;
+}
+
+export type ProofUserMentionedTriggerEvent = {
+  type: EventType.UserMentioned;
+  date: string;
+  usersMentioned: { id: string, email: string, name?: string }[];
+  commentId: string;
+  pageNumber: number;
+}
+
+export type ProofReviewerDecisionTriggerEvent = {
+  type: EventType.ReviewerDecision;
+  date: string;
+  decision: ReviewerDecision
+  role: ReviewerRole;
 }
 
 export type IntegrationReference = {
@@ -162,6 +207,8 @@ type WebhookEventMap = {
   [EventType.ProofOverdue]: ProofOverdueWebhookEvent;
   [EventType.ProofArchived]: ProofArchivedWebhookEvent;
   [EventType.ProofUnarchived]: ProofUnarchivedWebhookEvent;
+  [EventType.UserMentioned]: ProofUserMentionedTriggerEvent;
+  [EventType.ReviewerDecision]: ProofReviewerDecisionTriggerEvent;
 }
 
 type ProofMap = {
@@ -172,6 +219,8 @@ type ProofMap = {
   [EventType.ProofOverdue]: Proof;
   [EventType.ProofArchived]: Proof;
   [EventType.ProofUnarchived]: Proof;
+  [EventType.UserMentioned]: Proof;
+  [EventType.ReviewerDecision]: Proof;
 }
 
 type TriggerEventMap = {
@@ -182,6 +231,8 @@ type TriggerEventMap = {
   [EventType.ProofOverdue]: ProofOverdueTriggerEvent;
   [EventType.ProofArchived]: ProofArchivedTriggerEvent;
   [EventType.ProofUnarchived]: ProofUnarchivedTriggerEvent;
+  [EventType.UserMentioned]: ProofUserMentionedTriggerEvent;
+  [EventType.ReviewerDecision]: ProofReviewerDecisionTriggerEvent;
 };
 
 export type Payload<T extends EventType> = {
@@ -192,7 +243,7 @@ export type Payload<T extends EventType> = {
   };
   trigger: (
     | { type: TriggerType.System; id: null }
-    | { type: TriggerType.User; id: string }
+    | { type: TriggerType.User; id: string, name: string | null, email: string | null }
   ) & {
     event: TriggerEventMap[T];
   };
